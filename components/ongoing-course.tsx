@@ -92,7 +92,7 @@ export function OngoingCourseCard({ course, isOngoing }: OngoingCourseCardProps)
     }
 
     try {
-      await deleteAssessment(assessmentId)
+      await deleteAssessment(assessmentId, course.user_id)
       toast.success("Assessment deleted successfully!")
       router.refresh()
     } catch (error) {

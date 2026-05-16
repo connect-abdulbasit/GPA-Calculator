@@ -6,6 +6,7 @@ import { Suspense } from "react"
 import Loading from "./loading"
 import { ProfileCompletionWrapper } from "@/components/ProfileCompletionWrapper"
 import { auth } from "@/auth"
+import { DashboardProviders } from "./providers"
 
 export default async function DashboardLayout({
   children,
@@ -13,19 +14,21 @@ export default async function DashboardLayout({
   children: React.ReactNode
 }) {
   const session = await auth.api.getSession({ headers: await headers() })
-  
+
   if (!session?.user) {
     redirect("/sign-in")
   }
 
   return (
-    <div className="relative min-h-screen bg-background">
-      <Navbar />
-      <ProfileCompletionWrapper>
-      <Suspense fallback={<Loading />}>
-        <main className="container mx-auto px-4 py-8">{children}</main>
-      </Suspense>
-    </ProfileCompletionWrapper>
-    </div>
+    <DashboardProviders>
+      <div className="relative min-h-screen bg-background">
+        <Navbar />
+        <ProfileCompletionWrapper>
+          <Suspense fallback={<Loading />}>
+            <main className="container mx-auto px-4 py-8">{children}</main>
+          </Suspense>
+        </ProfileCompletionWrapper>
+      </div>
+    </DashboardProviders>
   )
 }
